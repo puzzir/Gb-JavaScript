@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table{
+            border:1px solid gray;
+        }
+        td{
+            width: 70px;
+            height: 70px;
+            text-align: center;
+            font-size: 15pt;
+            padding: 5px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<div></div>
+<script>
+
+    var table = document.createElement("table");
+
+    var number = 8;
+    var isBlack = false;
+    for (var i = 1; i <= 8; i++) {
+        var tr = document.createElement("tr");
+        var tdNumber = document.createElement("td");
+        tdNumber.innerHTML = "<h2>" + number + "</h2>";
+        number--;
+        tr.append(tdNumber);
+        table.append(tr);
+        for (var j = 1; j <= 8; j++) {
+            var td = document.createElement("td");
+            if(i == 1 || i == 8) {
+                addChess(td, j)
+            }
+            if(i == 2 || i == 7) {
+                addChess(td, 0)
+            }
+            if(isBlack == true) {
+                td.style.backgroundColor = "#000000"
+                td.style.color = "#ffffff"
+                if(j != 8) {
+                    isBlack = false
+                }
+            } else if(j != 8) {
+                isBlack = true
+            }
+            tr.append(td);
+        }
+    }
+
+    var tr = document.createElement("tr");
+    let letters = ["", "A", "B", "C", "D", "E", "F", "G", "H"];
+    for (i = 0; i < letters.length; ++i) {
+        addLetter(tr, letters[i]);
+    }
+    table.append(tr);
+
+    function addLetter(tr, letter) {
+        var td = document.createElement("td");
+        td.innerHTML = "<h2>" + letter + "</h2>";
+        tr.append(td);
+    }
+
+    function addChess(td, number) {
+        switch (number) {
+            case 1:
+                td.innerHTML = "<h2>&#9814;</h2>";
+                break;
+            case 2:
+                td.innerHTML = "<h2>&#9816;</h2>";
+                break;
+            case 3:
+                td.innerHTML = "<h2>&#9815;</h2>";
+                break;
+            case 4:
+                td.innerHTML = "<h2>&#9813;</h2>";
+                break;
+            case 5:
+                td.innerHTML = "<h2>&#9812;</h2>";
+                break;
+            case 6:
+                td.innerHTML = "<h2>&#9815;</h2>";
+                break;
+            case 7:
+                td.innerHTML = "<h2>&#9816;</h2>";
+                break;
+            case 8:
+                td.innerHTML = "<h2>&#9814;</h2>";
+                break;
+            default:
+                td.innerHTML = "<h2>&#9817;</h2>";
+                break;
+        }
+    }
+
+    document.querySelector("div").append(table);
+
+</script>
+</body>
+</html>
