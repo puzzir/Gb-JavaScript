@@ -1,101 +1,71 @@
-<script src="script.js"></script>
-   <style>
-    .red{
-        color:red;
-    }
-    .blue{
-        color:blue;
-    }
-       .hide{
-           display: none;
-       }
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Document</title>
+</head>
+<body>
 
-<button id="b1">Кнопка 1</button>
-<button id="b2">Кнопка 2</button>
-<button id="b3">Кнопка 3</button>
-<button onclick="alert('клик на B4')" id="b4">Кнопка 4</button>
-<button onclick="document.querySelector('#b4').click();console.log('Клик на B5')" id="b5">Кнопка 5</button>
+<div class="buy">
+   <h2>Товары</h2>
+   <button id="b1">Товар 1</button>
+   <button id="b2">Товар 2</button>
+   <button id="b3">Товар 3</button>
+   <button id="buyBtn">Купить</button>
 
+   <br>
+   <h4 id="name">Наименование: </h4>
+   <h4 id="price">Цена: </h4>
+   <br>
+</div>
 
-<a href="#">Ссылка 1</a>
-<a href="#">Ссылка 2</a>
-<a href="#">Ссылка 3</a>
-
+<div class="busket">
+   <hr/>
+   <h2>Корзина</h2>
+   <div class="busketList"></div>
+   <h4>Общая стоимость: </h4>
+   <h4 id="busketPrice"></h4>
+</div>
 
 <script>
-    var buttons = document.querySelectorAll("button");
-    var links = document.querySelectorAll("a");
-    for(var item of links){
-        item.onclick=f
-    }
-    
-//    Если функция запускается по событию, то у нее всегда первым параметром является глобальный
-//    объект event, у которого свойство target - это источник события
-    
-    function f(e){
-//        console.log(e);
-//        console.log(this);//this - это источник события
-        switch(e.target){
-            case links[0]:
-                for(var i = 0;i < buttons.length;i++){
-                    i % 2 == 0 ? buttons[i].classList.add('red') : buttons[i].classList.add('blue');
-                }
-                break;
-            case links[1]:
-                for(var i = 2;i < buttons.length;i++){
-                    buttons[i].remove()
-                }
-                break;
-             case links[2]:
-                for(var item of buttons){
-                  item.style.color = getRandomColor();
-                }
-                break;
-        }
-    }
-    
-    var img = [];
-    for(var i = 0;i < 3;i++){
-        buttons[i].onclick = function(e){
-            if(img[i] == undefined){
-                img[i] = document.createElement("img");
-                img[i].src = "p" + (e.target.id[1] - 1) + ".png";
-                document.body.append(img[i]);
-            }else{
-                img[i].remove();
-                delete img[i];
-            }  
-          
-            
-//            img.onclick = function(){
-//                this.classList.toggle("hide");
-//            }
-        }
-    }
-    
-    
-//    function f1(){
-//        console.log('Функция f1 запущена!');
-//    }
-//    
-//    function f2(e){
-//        console.log('Функция f2 запущена!');
-//        e.target.removeEventListener("click",f2);
-//    }
-//    
-//    buttons[0].addEventListener("click",f1);
-//    buttons[0].addEventListener("click",f2);
-//    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   var goods = [
+      ["чемодан", 1000],
+      ["букет", 500],
+      ["пакет", 200],
+   ];
+   var buttons = document.querySelectorAll("button");
+   var buyDiv = document.querySelector("div.buy");
+   var img, name, price = 0;
+   for(var i = 0;i < 3;i++){
+      buttons[i].onclick = function(e){
+         if(img == undefined){
+            img = document.createElement("img");
+            buyDiv.appendChild(img);
+         }
+         goodsId = e.target.id[1] - 1;
+         name = goods[goodsId][0];
+         price = goods[goodsId][1];
+         document.getElementById("name").innerHTML = "Наименование: " + name;
+         document.getElementById("price").innerHTML = "Цена: " + price;
+         img.src = "p" + (goodsId) + ".png";
+
+         //проверяем сущестование картинки
+         img.onload = function(){console.log('картинка существует')};
+         img.onerror = function(){console.log('картинка не существует')};
+      }
+   }
+
+   var busketDiv = document.querySelector("div.busketList");
+   var totalCost = 0
+   //купить
+   buttons[3].onclick = function(e){
+      var h = document.createElement("h4");
+      var t = document.createTextNode(" - " + name);
+      h.appendChild(t);
+      busketDiv.appendChild(h);
+      totalCost += price;
+      document.getElementById("busketPrice").innerHTML = totalCost;
+   }
 </script>
+
+</body>
