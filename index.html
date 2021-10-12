@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Document</title>
+</head>
+<body>
+
+<div class="buy">
+   <h2>Товары</h2>
+   <button id="b1">Товар 1</button>
+   <button id="b2">Товар 2</button>
+   <button id="b3">Товар 3</button>
+   <button id="buyBtn">Купить</button>
+
+   <br>
+   <h4 id="name">Наименование: </h4>
+   <h4 id="price">Цена: </h4>
+   <br>
+</div>
+
+<div class="busket">
+   <hr/>
+   <h2>Корзина</h2>
+   <div class="busketList"></div>
+   <h4>Общая стоимость: </h4>
+   <h4 id="busketPrice"></h4>
+</div>
+
+<script>
+   var goods = [
+      ["чемодан", 1000],
+      ["букет", 500],
+      ["пакет", 200],
+   ];
+   var buttons = document.querySelectorAll("button");
+   var buyDiv = document.querySelector("div.buy");
+   var img, name, price = 0;
+   for(var i = 0;i < 3;i++){
+      buttons[i].onclick = function(e){
+         if(img == undefined){
+            img = document.createElement("img");
+            buyDiv.appendChild(img);
+         }
+         goodsId = e.target.id[1] - 1;
+         name = goods[goodsId][0];
+         price = goods[goodsId][1];
+         document.getElementById("name").innerHTML = "Наименование: " + name;
+         document.getElementById("price").innerHTML = "Цена: " + price;
+         img.src = "p" + (goodsId) + ".png";
+
+         //проверяем сущестование картинки
+         img.onload = function(){console.log('картинка существует')};
+         img.onerror = function(){console.log('картинка не существует')};
+      }
+   }
+
+   var busketDiv = document.querySelector("div.busketList");
+   var totalCost = 0
+   //купить
+   buttons[3].onclick = function(e){
+      var h = document.createElement("h4");
+      var t = document.createTextNode(" - " + name);
+      h.appendChild(t);
+      busketDiv.appendChild(h);
+      totalCost += price;
+      document.getElementById("busketPrice").innerHTML = totalCost;
+   }
+</script>
+
+</body>
