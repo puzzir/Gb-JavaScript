@@ -8,6 +8,8 @@ var gameIsRunning = false; // Запущена ли игра
 var snake_timer; // Таймер змейки
 var food_timer; // Таймер для еды
 var score = 0; // Результат
+var Barrier_x = 0;
+var Barrier_y = 0;
 
 function init() {
     prepareGameField(); // Генерация поля
@@ -68,6 +70,7 @@ function startGame() {
 
     snake_timer = setInterval(move, SNAKE_SPEED);//каждые 200мс запускаем функцию move
     setTimeout(createFood, 5000);
+    setTimeout(createBarrier, 5000);
 }
 
 /**
@@ -138,6 +141,9 @@ function move() {
             // удаляем хвост
             removed.setAttribute('class', classes[0] + ' ' + classes[1]);
         }
+        if(haveBarrier(new_unit)) {
+            finishTheGame()
+        }
     }
     else {
         finishTheGame();
@@ -172,8 +178,26 @@ function haveFood(unit) {
         check = true;
         createFood();
         score++;
-        
+        document.getElementById('score').innerHTML = "Счет: " + score;
     }
+    return check;
+}
+
+/**
+ * проверка на препятствие
+ * @param unit
+ * @returns {boolean}
+ */
+function haveBarrier(unit) {
+    var check = false;
+
+    var unit_classes = unit.getAttribute('class').split(' ');
+
+    // Если препятствие
+    if (unit_classes.includes('barrier-unit')) {
+        check = true;
+    }
+
     return check;
 }
 
@@ -200,6 +224,33 @@ function createFood() {
 
             food_cell.setAttribute('class', classes + 'food-unit');
             foodCreated = true;
+        }
+    }
+}
+
+/**
+ * Создание препятствия
+ */
+function createBarrier() {
+    var barrierCreated = false;
+
+    while (!barrierCreated) {
+        // рандом
+        var barrier_x = Math.floor(Math.random() * FIELD_SIZE_X);
+        var barrier_y = Math.floor(Math.random() * FIELD_SIZE_Y);
+
+        var barrier_cell = document.getElementsByClassName('cell-' + barrier_y + '-' + barrier_x)[0];
+        var barrier_cell_classes = barrier_cell.getAttribute('class').split(' ');
+
+        // проверка на змейку
+        if (!barrier_cell_classes.includes('snake-unit')) {
+            var classes = '';
+            for (var i = 0; i < barrier_cell_classes.length; i++) {
+                classes += barrier_cell_classes[i] + ' ';
+            }
+
+            barrier_cell.setAttribute('class', classes + 'barrier-unit');
+            barrierCreated = true;
         }
     }
 }
